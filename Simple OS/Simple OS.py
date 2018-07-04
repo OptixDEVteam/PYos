@@ -236,7 +236,11 @@ def textedit(docName):
         textLine = str(input(""))
         if textLine == "*STOP*":
             pickle.dump( doc, open( docName+".p", "wb" ) )
-            nameSave = pickle.load( open( "docNames.p", "rb" ) )
+            try:
+                nameSave = pickle.load( open( "docNames.p", "rb" ) )
+            except:
+                pickle.dump([],open("docNames.p", "wb"))
+                nameSave = pickle.load( open("docNames.p", "rb"))
             nameSave.insert(0,docName)
             pickle.dump( nameSave, open( "docNames.p", "wb" ) )
             space(1)
@@ -563,11 +567,14 @@ print ("INSTALLATION - SUCSESSFUL")
 print ("Simple OS Ready for use")
 loop = 0
 space(5)
-if str(input("make a new userY/N? ")) == "Y":
-    pickle.dump( base64.b64encode(bytes(str(input("Create a Username: ")), 'utf-8')), open( "Username.p", "wb" ) )
-    print ("USER CREATED")
-    pickle.dump( base64.b64encode(bytes(str(input("Create a Password: ")), 'utf-8')), open( "Password.p", "wb" ) )
-    print ("PASSWORD CREATED")
+try:
+    open("Password.p","rb")
+except:
+    if str(input("make a new userY/N? ")) == "Y":
+        pickle.dump( base64.b64encode(bytes(str(input("Create a Username: ")), 'utf-8')), open( "Username.p", "wb" ) )
+        print ("USER CREATED")
+        pickle.dump( base64.b64encode(bytes(str(input("Create a Password: ")), 'utf-8')), open( "Password.p", "wb" ) )
+        print ("PASSWORD CREATED")
 if signin() == True:
     space(1)
     programlist()
